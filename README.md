@@ -11,6 +11,13 @@ This platform presents services including firewall and load balance of web serve
 then sophisticated network rules will be integrated to a unified one.
 
 Install jade first.
-	$ npm install jade --global
+
+```shell
+$ npm install jade --global
+```
+
 Then, use jade tool to convert .jade to .html.
-	$ jade {index.jade, merged.jade}
+
+```shell
+$ jade {index.jade, merged.jade}
+```
