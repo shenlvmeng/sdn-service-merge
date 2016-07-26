@@ -9,3 +9,8 @@ This front-end homework is constructed with the help of
 
 This platform presents services including firewall and load balance of web server. Click button 'Merge!',
 then sophisticated network rules will be integrated to a unified one.
+
+Install jade first.
+	$ npm install jade --global
+Then, use jade tool to convert .jade to .html.
+	$ jade {index.jade, merged.jade}
