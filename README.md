@@ -21,3 +21,9 @@ Then, use jade tool to convert .jade to .html.
 ```shell
 $ jade {index.jade, merged.jade}
 ```
+
+To activate *开始测试*, starter.js is supposed to started by nodejs first:
+
+```shell
+$ node starter.js
+``` 

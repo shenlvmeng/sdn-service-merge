@@ -71,6 +71,23 @@
 				'y': function(d) {return d.y;}
 			});
 		});
+
+		//start button: 'new' a terminal or cmd window
+		$("button.start").on('click', function(){
+			$.ajax({
+				url: 'http://localhost:8888',
+				dataType: 'jsonp',
+				jsonpCallback: '_cb',
+				cache: false,
+				success: function(data){
+					var data = JSON.parse(data);
+					if(data.status == 'error') alert(data.message);
+				},
+				error: function(XHR, status, error){
+					console.log('error'+ status +" "+ error);
+				}
+			});
+		});
 		
 		//Load balance switch module
 		$("span.button").on('click', function(){
