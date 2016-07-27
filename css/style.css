@@ -20,13 +20,13 @@ article{
 	border-bottom: 2px solid #eee;
 	font-family: Microsoft Yahei;
 }
-article .header{
+.header{
 	height: 10%;
 	background-color: #eee;
 	border-bottom: 1px solid #ddd;
 	position: relative;
 }
-article .header span{
+.header span{
 	display: block;
 	position: absolute;
 	top: 50%;
@@ -35,26 +35,26 @@ article .header span{
 	font-weight: bold;
 	font-size: 25px;
 }
-article .topo{
+.topo{
 	height: 45%;
 	border-bottom: 1px solid #ddd;
 }
-article .topo svg{
+.topo svg{
 	border: 0;
 	width: 100%;
 	height: 100%;
 }
-article .panel{
+.panel{
 	height: 45%;
 	padding: 5% 7%;
 	font-size: 18px;
 	font-weight: bold;
 }
-article .panel p{
+.panel p{
 	margin: 1.5em 0;
 	font-family: Arial, Georgia, Microsoft Yahei;
 }
-article .panel p input[type=text]{
+.panel p input[type=text]{
 	margin: 0 2em;
 	height: 2em;
 	width: 20em;
@@ -62,10 +62,10 @@ article .panel p input[type=text]{
 	border-radius: 2px;
 	padding-left: 3px;
 }
-article .panel p span{
+.panel p span{
 	letter-spacing: 2px;
 }
-article .panel span.shift{
+.panel span.shift{
 	margin: 0 1.5em;
 	display: inline-block;
 	height: 25px;

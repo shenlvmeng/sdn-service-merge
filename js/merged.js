@@ -1,12 +1,14 @@
 (function(){
 	$().ready(function(){
-		//Adjust each article's width
-		var width = $('#container').children().length * 50 + "%";
-		$('body').width(width);
-		$('article').width((100 / $('#container').children().length) - 0.1 + "%");
-		console.log('indes.js Loaded successfully!');
 
-		//draw each network
+		//Fade in 'body'
+		$('body').animate({
+				'opacity': 1
+			}, 3000, 'easeInCubic', function(){
+				console.log("Merged.js Loaded successfully!");
+		});
+
+		//draw the network
 		var nodes = d3.range(1,8).map(function(i){
 			return {name: "S" + i};
 		});
@@ -22,7 +24,7 @@
 			.charge(-300)
 		force.start();
 
-		var svg_links = d3.selectAll('svg')
+		var svg_links = d3.select('svg')
 			.selectAll('line')
 			.data(links)
 			.enter()
@@ -30,7 +32,7 @@
 			.attr({
 				'stroke': '#ccc', 'stroke-width': 2
 			});
-		var svg_nodes = d3.selectAll('svg')
+		var svg_nodes = d3.select('svg')
 			.selectAll('text')
 			.data(nodes)
 			.enter()
@@ -44,7 +46,7 @@
 			})
 			.text('\uf108')
 			.call(force.drag); //this line can be commented
-		var svg_texts = d3.selectAll('svg')
+		var svg_texts = d3.select('svg')
 			.selectAll('text.text')
 			.data(nodes)
 			.enter()
@@ -71,7 +73,7 @@
 				'y': function(d) {return d.y;}
 			});
 		});
-		
+
 		//Load balance switch module
 		$("span.button").on('click', function(){
 			var self = $(this);
@@ -79,26 +81,15 @@
 				self.animate({
 					'margin-right': '31px'
 				},100,'swing',function(){
-					$('#container article:nth-child(2) svg text[did=3]').attr('fill', 'steelblue');
 					self.parent().css("background-color", "limegreen");
 				});
 			else
 				self.animate({
 					'margin-right': '0'
 				},100,'swing',function(){
-					$('#container article:nth-child(2) svg text[did=3]').attr('fill', '#aaa');
 					self.parent().css("background-color", "#aaa");
 				});
 			return false;
 		});
-
-		//Merge button
-		$("button#merge_b").on('click', function(){
-			$('body').animate({
-				'opacity': 0
-			}, 2000, 'easeOutCubic', function(){
-				window.location.href = "./merged.html";
-			});
-		})
 	});
 })();

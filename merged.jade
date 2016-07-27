@@ -3,9 +3,46 @@ html(lang="zh-cn")
 	head
 		title 融合结果
 		meta(charset="utf-8")
-		//script(src='./js/d3.min.js')
-		//script(src='./js/jquery-1.12.4.min.js')
-		//link(rel='stylesheet' type='text/css' href='./css/style.css')
-		//link(rel='stylesheet' type='text/css' href='./css/font-awesome.min.css')
+		script(src='./js/d3.min.js')
+		script(src='./js/jquery-1.12.4.min.js')
+		script(src='./js/jquery.easing.min.js')
+		script(src='./js/merged.js')
+		link(rel='stylesheet' type='text/css' href='./css/style.css')
+		link(rel='stylesheet' type='text/css' href='./css/font-awesome.min.css')
+		style
+			include ./css/patch.css
 	body
-		="That's worked!"
+		//-mixin delaration
+		mixin panel_column()
+			article
+				if block
+					block
+				else
+					p.empty No content provided
+
+		#container
+			.header
+				span Firewall + Load Balance
+			.topo
+				svg.topo
+			.panel
+				+panel_column()
+					p Deny list: 
+						input(type='text' name='deny')
+						button.add_d
+							i.fa.fa-plus-circle(aria-hidden=true)
+							="添加"
+					p Allow list:
+						input(type='text' name='allow')
+						button.add_a 
+							i.fa.fa-plus-circle(aria-hidden=true)
+							="添加"
+				+panel_column()
+					p
+						span 开启负载均衡
+						span.shift
+							span.button
+		#merge
+			button#merge_b
+				i.fa.fa-play-circle(aria-hidden=true)
+				="启动测试"
