@@ -203,7 +203,10 @@
 			})
 			.text(function(d){
 				return d;
-			});
+			})
+			.on('mouseover', mouseIn)
+			.on('mousemove', mouseMove)
+			.on('mouseout', mouseOut);
 		}
 
 		function drawEllipse(selection){
@@ -257,6 +260,43 @@
 						else return 'DB';
 					}
 				})
+				.on('mouseover', function(){
+					mouseIn(d3.select(this).text());
+				})
+				.on('mousemove', mouseMove)
+				.on('mouseout', mouseOut);
+		}
+
+		//add logic graph hint
+		var tooltip = d3.select('body')
+			.append('div')
+			.attr('class','tooltip')
+			.style('opacity', 0);
+		//element on listener callback function -- display tooltip
+		function mouseIn(d){
+			var content = "";
+			if(d == "Campus") content = ": H1, H2";
+			else if(d == "Web Server") 
+				content = ":<br />Web Server 1(负载均衡前)<br />Web Server 1,Web Server 2(负载均衡后)";
+			else if(d == "Students") content = ": H1";
+			else if(d == "Teachers") content = ": H2";
+			else if(d == "DB") content = ": Database";
+			else content = "Unknown."
+			tooltip.html(d+content)
+				.style({
+					'left': d3.event.pageX + 'px',
+					'top': (d3.event.pageY+20) + 'px',
+					'opacity': 1
+				});
+		}
+		function mouseMove(){
+			tooltip.style({
+				'left': d3.event.pageX + 'px',
+				'top': (d3.event.pageY+20) + 'px'
+			});
+		}
+		function mouseOut(){
+			tooltip.style('opacity', 0);
 		}
 
 		//paint some nodes and some links
