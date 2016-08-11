@@ -59,6 +59,9 @@
 				else if(i == 5) return '\uf1c0';
 				else return '\uf0ac';
 			})
+			.on('dblclick', function(d){
+				d.fixed = false;
+			})
 			.call(force.drag); //this line can be commented
 		var svg_texts = d3.selectAll('svg')
 			.selectAll('text.text')
@@ -87,6 +90,11 @@
 				'y': function(d) {return d.y;}
 			});
 		});
+		//add node fixed
+		force.drag()
+			.on('dragstart', function(d,i){
+				d.fixed = true;
+			});
 
 		//use <g> to separate graphs, define marker to draw arrow
 		d3.selectAll('svg').append('g')
