@@ -28,7 +28,7 @@
 			.linkDistance(80)
 			.charge(-300)
 			.start();
-		console.log(force.nodes());
+		//console.log(force.nodes());
 
 		var svg_links = d3.selectAll('svg')
 			.selectAll('line')
@@ -174,7 +174,7 @@
 			'alignment-baseline': 'hanging',
 			'transform': 'translate(12,8)'
 		}).text('LB');
-		console.log(g2.selectAll('g:nth-child(n)'));
+		//console.log(g2.selectAll('g:nth-child(n)'));
 		g2.selectAll('g:not(:nth-child(5n+1))')
 			.each(function(d, i){
 				d3.select(this).append('text').attr({
@@ -292,6 +292,31 @@
 				});
 			return false;
 		});
+
+		//billing button: get flow data and revise display
+		$("button.start_catch").on('click', function(){
+			var parent = $(this).parent();
+			var len = parent.find('p:nth-child(1)').html().length;
+			$.ajax({
+				url: 'http://localhost:8888/billing',
+				dataType: 'jsonp',
+				jsonpCallback: '_cb',
+				cache: false,
+				success: function(data){
+					var data = JSON.parse(data);
+					if(data.status == 'error') alert(data.message);
+					else var flows = data.bills;
+					
+					flows.forEach(function(val, i){
+						var tmpstr = parent.find('p:nth-child('+ (i+1) +')').html().substr(0,24);
+						parent.find('p:nth-child('+ (i+1) +')').html(tmpstr+'￥'+val);
+					});
+				},
+				error: function(XHR, status, error){
+					console.log('error'+ status +" "+ error);
+				}
+			});
+		})
 
 		//Merge button
 		$("button#merge_b").on('click', function(){

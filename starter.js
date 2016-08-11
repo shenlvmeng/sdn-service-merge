@@ -11,19 +11,24 @@ var server = http.createServer(function(request, response){
 		var sys = process.platform;
 		console.log(sys);
 		if(sys === 'win32') var cmd = 'start cmd';
-		else if(sys === 'linux') var cnd = 'gnome-terminal';
+		else if(sys === 'linux') var cmd = 'gnome-terminal';
 		else{
 			console.log('Unsupported OS!');
-			response.write("_cb(\"{'status': 'error', 'message': 'Unsupported OS!'}\")");
+			response.write('_cb("{\\\"status\\\": \\\"error\\\", \\\"message\\\": \\\"Unsupported OS!\\\"}")');
 			response.end();
 		}
 		exec(cmd,(error,stdout,stderr) => {
 			if(error)
 				console.error(`exec error: ${error}`);
-			response.write("_cb(\"{'status': 'ok'}\")");
+			response.write('_cb("{\\\"status\\\": \\\"ok\\\"}")');
+			response.end();
 		});
+	} else if(pathname == '/billing') {
+		response.write('_cb("{\\\"status\\\": \\\"ok\\\", \\\"bills\\\": [10, 11, 12, 12]}")');
+		response.end();
 	} else {
-		response.write("_cb(\"{'status': 'error', 'message': 'Wrong path!'}\")");
+		response.write('_cb("{\\\"status\\\": \\\"error\\\", \\\"message\\\": \\\"Wrong path!\\\"}")');
+		response.end();
 	}
 }).listen(8888);
 console.log("Server has started.");
