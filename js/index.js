@@ -306,7 +306,7 @@
 					var data = JSON.parse(data);
 					if(data.status == 'error') alert(data.message);
 					else var flows = data.bills;
-					
+
 					flows.forEach(function(val, i){
 						var tmpstr = parent.find('p:nth-child('+ (i+1) +')').html().substr(0,24);
 						parent.find('p:nth-child('+ (i+1) +')').html(tmpstr+'￥'+val);
@@ -316,7 +316,7 @@
 					console.log('error'+ status +" "+ error);
 				}
 			});
-		})
+		});
 
 		//Merge button
 		$("button#merge_b").on('click', function(){

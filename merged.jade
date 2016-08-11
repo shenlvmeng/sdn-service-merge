@@ -42,6 +42,15 @@ html(lang="zh-cn")
 						span 开启负载均衡
 						span.shift
 							span.button
+				+panel_column()
+					p H1 到 Web Server1 的流量已计费：
+					p H2 到 Web Server1 的流量已计费：
+					p H1 到 Web Server2 的流量已计费：
+					p H2 到 Web Server2 的流量已计费：
+					p
+						button.start_catch
+							i.fa.fa-play-circle(aria-hidden=true)
+							="获取流量"
 		#merge
 			button#merge_b
 				i.fa.fa-play-circle(aria-hidden=true)
