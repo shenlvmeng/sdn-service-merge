@@ -51,6 +51,13 @@ html(lang="zh-cn")
 						button.start_catch
 							i.fa.fa-wrench(aria-hidden=true)
 							="获取计费"
+				+panel_column()
+					p Host Status: 
+						select
+							option 正常
+							option 异常
+					p Destination Server: 
+						span#response DNS Server
 		#merge
 			button#merge_b
 				i.fa.fa-play-circle(aria-hidden=true)

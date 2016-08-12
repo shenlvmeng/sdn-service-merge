@@ -99,7 +99,7 @@
 		//use <g> to separate graphs, define marker to draw arrow
 		d3.selectAll('svg').append('g')
 			.attr('transform', 'translate(0,'+  height * 3 / 4 +')');
-		var gs = d3.selectAll('#container article:not(:nth-child(2)) svg g');
+		var gs = d3.selectAll('#container article:nth-child(2n+1) svg g');
 		var defs = 	d3.selectAll('svg').append('defs');
 		defs.append('marker')
 			.attr({
@@ -115,6 +115,7 @@
 		var g1 = d3.select("#container article:nth-child(1) svg g");
 		var g2 = d3.select("#container article:nth-child(2) svg g");
 		var g3 = d3.select("#container article:nth-child(3) svg g");
+		var g4 = d3.select("#container article:nth-child(4) svg g");
 
 		//draw ellipse and arrow line
 		gs.selectAll('ellipse')
@@ -137,7 +138,7 @@
 				'x2': width * 2 / 3 - 55, 'y2': height / 8,
 				'marker-end' : 'url(#arrow)'
 			});
-		//draw chart 1,3 separately
+		//draw logic chart 1,3 separately
 		g1.selectAll('text').data(['Campus','Web Server'])
 			.enter()
 			.append('text')
@@ -164,6 +165,51 @@
 			'alignment-baseline': 'hanging',
 			'transform': 'translate(14,8)'
 		}).text('Billing');
+
+		//draw logic chart 4
+		g4.selectAll('g')
+			.data([0,1])
+			.enter()
+			.append('g')
+			.attr('transform', function(d){
+				return 'translate('+ width * d / 2 +','+'0)';
+			})
+			.call(drawEllipse)
+			.call(drawLine)
+			.each(function(d, i){
+				d3.select(this).selectAll('text')
+					.data([1,3])
+					.enter()
+					.append('text')
+					.attr({
+						'x': function(d){
+							return width * d / 8;
+						},
+						'y' : height / 8,
+						'class': 'text',
+						'text-anchor': 'middle',
+						'alignment-baseline': 'middle'
+					})
+					.text(function(d){
+						if(d == 1){
+							if(i == 0) return 'Normal Host';
+							else return 'Error Host';
+						} else {
+							if(i == 0) return 'DNS';
+							else return 'RMD Server';
+						}
+					});
+				d3.select(this).append('text')
+					.attr({
+						'fill': 'steelblue', 'font-size': "14",
+						'text-anchor': 'middle',
+						'alignment-baseline': 'hanging',
+						'transform': 'translate('+ (width/ 4) +',28)'
+					})
+					.text(function(){
+						return i == 0 ? "53" : "*";
+					});
+			});
 
 		//draw fucking chart 2
 		g2.selectAll('g')
@@ -223,14 +269,15 @@
 		}
 
 		function drawEllipse(selection){
+			var split = selection[0].length || 1;
 			selection.selectAll('ellipse')
 			.data([1,3])
 			.enter()
 			.append('ellipse')
 			.attr({
-				'rx': 40, 'ry': 25,
+				'rx': 40 + 8*(3-split), 'ry': 25,
 				'cx': function(d){
-					return width * d / 12;
+					return width * d / (4*split);
 				},
 				'cy': height / 8,
 				'fill': "#fff", 'stroke': 'steelblue',
@@ -239,11 +286,12 @@
 		}
 
 		function drawLine(selection){
+			var split = selection[0].length || 1;
 			selection.append('line')
 			.attr({
 				'stroke-width': 3, 'stroke': "steelblue",
-				'x1': width / 12 + 40, 'y1': height / 8,
-				'x2': width * 1 / 4 - 45, 'y2': height / 8,
+				'x1': width / (4*split) + 40 + 8*(3-split), 'y1': height / 8,
+				'x2': width * 3 / (4*split) - 45 - 8*(3-split), 'y2': height / 8,
 				'marker-end' : 'url(#arrow)'
 			});
 		}
@@ -442,6 +490,32 @@
 					self.parent().css("background-color", "#aaa");				
 				});
 			return false;
+		});
+
+		//DNS protect switch module
+		$("select").on('change', function(){
+			var state = $(this).val();
+			if(state == "异常") $("span#response").html("Remedy Server");
+			else $("span#response").html("DNS Server");
+			$.ajax({
+				url: 'TODO',
+				dataType: 'jsonp',
+				jsonpCallback: '_cb',
+				cache: false,
+				success: function(data){
+					var data = JSON.parse(data);
+					if(data.status == 'error') alert(data.message);
+					else var flows = data.bills;
+
+					flows.forEach(function(val, i){
+						var tmpstr = parent.find('p:nth-child('+ (i+1) +')').html().substr(0,24);
+						parent.find('p:nth-child('+ (i+1) +')').html(tmpstr+'￥'+val);
+					});
+				},
+				error: function(XHR, status, error){
+					console.log('error'+ status +" "+ error);
+				}
+			});
 		});
 
 		//billing button: get flow data and revise display

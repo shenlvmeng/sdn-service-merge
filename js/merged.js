@@ -167,6 +167,32 @@
 			return false;
 		});
 
+		//DNS protect switch module
+		$("select").on('change', function(){
+			var state = $(this).val();
+			if(state == "异常") $("span#response").html("Remedy Server");
+			else $("span#response").html("DNS Server");
+			$.ajax({
+				url: 'TODO',
+				dataType: 'jsonp',
+				jsonpCallback: '_cb',
+				cache: false,
+				success: function(data){
+					var data = JSON.parse(data);
+					if(data.status == 'error') alert(data.message);
+					else var flows = data.bills;
+
+					flows.forEach(function(val, i){
+						var tmpstr = parent.find('p:nth-child('+ (i+1) +')').html().substr(0,24);
+						parent.find('p:nth-child('+ (i+1) +')').html(tmpstr+'￥'+val);
+					});
+				},
+				error: function(XHR, status, error){
+					console.log('error'+ status +" "+ error);
+				}
+			});
+		});
+
 		//billing button: get flow data and revise display
 		$("button.start_catch").on('click', function(){
 			var parent = $(this).parent().parent();
