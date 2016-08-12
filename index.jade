@@ -64,16 +64,22 @@ html(lang="zh-cn")
 				button.start_catch
 					i.fa.fa-wrench(aria-hidden=true)
 					="获取计费"
+				button.end
+					i.fa.fa-ban(aria-hidden=true)
+					="终止测试"
 			+column('DNS protect application')
 				p Host Status: 
 					select
 						option 正常
-						option 异常
+						option 隔离
 				p Destination Server: 
 					span#response DNS Server
 				button.start
 					i.fa.fa-play-circle(aria-hidden=true)
 					="启动测试"
+				button.end
+					i.fa.fa-ban(aria-hidden=true)
+					="终止测试"
 
 		#merge
 			button#merge_b

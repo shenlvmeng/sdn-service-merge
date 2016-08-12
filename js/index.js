@@ -197,7 +197,7 @@
 					.text(function(d){
 						if(d == 1){
 							if(i == 0) return 'Normal Host';
-							else return 'Error Host';
+							else return 'Qn Host';
 						} else {
 							if(i == 0) return 'DNS';
 							else return 'RMD Server';
@@ -512,7 +512,7 @@
 		//DNS protect switch module
 		$("select").on('change', function(){
 			var state = $(this).val();
-			if(state == "异常"){
+			if(state == "隔离"){
 				$("span#response").html("Remedy Server");
 				$('#container article:nth-child(4) svg text[did=1]').attr('fill', 'orange');
 				$('#container article:nth-child(4) svg text[did=9]').attr('fill', 'steelblue');
