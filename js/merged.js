@@ -12,16 +12,19 @@
 		var width = $('svg').width();
 		var height = $('svg').height();
 
-		var nodes = d3.range(1,9).map(function(i){
-			if(i < 3) return {name: "H" + i};
-			else if(i > 2 && i < 6) return {name: "S" + (i - 2)};
-			else if(i == 6) return {name: "DB"};
-			else return {name: "Web Server" + (i - 6)};
+		var nodes = d3.range(1,13).map(function(i){
+			if(i < 4) return {name: "H" + i};
+			else if(i > 3 && i < 8) return {name: "S" + (i - 3)};
+			else if(i == 8) return {name: "DNS Server"};
+			else if(i == 9) return {name: "Remedy Server"};
+			else if(i > 9 && i < 12) return {name: "Web Server" + (i-9)};
+			else return {name: "DB"};
 		});
-		var links = [{source: 0, target: 2}, {source: 1, target: 2},
-			{source: 2, target: 3}, {source: 2, target: 4},
-			{source: 3, target: 4}, {source: 4, target: 6},
-			{source: 3, target: 5}, {source: 4, target: 7}
+		var links = [{source: 0, target: 3}, {source: 1, target: 3},
+			{source: 2, target: 3}, {source: 3, target: 4},
+			{source: 4, target: 5}, {source: 5, target: 7},
+			{source: 5, target: 8}, {source: 4, target: 6},
+			{source: 6, target: 9}, {source: 6, target: 10}, {source: 6, target: 11}
 		];
 		var force = d3.layout.force()
 			.nodes(nodes)
@@ -56,9 +59,10 @@
 				}
 			})
 			.text(function(d, i){
-				if(i < 2) return '\uf108';
-				else if(i > 1 && i < 5) return '\uf233';
-				else if(i == 5) return '\uf1c0';
+				if(i < 3) return '\uf108';
+				else if(i > 2 && i < 7) return '\uf233';
+				else if(i > 6 && i < 9) return '\uf187';
+				else if(i == 11) return '\uf1c0';
 				else return '\uf0ac';
 			})
 			.on('dblclick', function(d){
@@ -99,20 +103,21 @@
 			});
 
 		//paint the topo
-		[1,2,6,7].forEach(function(val){
+		[1,2,3,8,10].forEach(function(val){
 			$(".topo svg text[did="+ val +"]").attr('fill', 'steelblue');
 		});
-		[1,2,4,6].forEach(function(val){
-			$(".topo svg line[lid="+ val +"]").attr('stroke', 'steelblue');
-		});
-		[3,5].forEach(function(val){
+		[4,6,7].forEach(function(val){
 			$(".topo svg text[did="+ val +"]").attr('fill', '#000');
 		});
-		[3,7].forEach(function(val){
+		$(".topo svg text[did=12]").attr('fill', 'lightblue');
+		[1,2,3,4,5,6,8,9].forEach(function(val){
+			$(".topo svg line[lid="+ val +"]").attr('stroke', 'steelblue');
+		});	
+		[11].forEach(function(val){
 			$(".topo svg line[lid="+ val +"]").attr('stroke', 'lightblue');
 		});
 
-		var list = ['10.0.0.1', '10.0.0.2'];
+		var list = ['10.0.0.1', '10.0.0.2', '10.0.0.3'];
 		//add deny button: change color and send ban request
 		$("button.add_d").on('click', function(){			
 			var d_ip = $(this).parent().find('input').val().trim();
@@ -145,10 +150,10 @@
 				self.animate({
 					'margin-right': '31px'
 				},100,'swing',function(){
-					[5,7,8].forEach(function(val){
+					[7,10,11].forEach(function(val){
 						$('.topo svg text[did='+ val +']').attr('fill', 'green');
 					});
-					[6,8].forEach(function(val){
+					[9,10].forEach(function(val){
 						$('.topo svg line[lid='+ val +']').attr('stroke', 'green');
 					});
 					self.parent().css("background-color", "limegreen");
@@ -157,11 +162,11 @@
 				self.animate({
 					'margin-right': '0'
 				},100,'swing',function(){
-					$('.topo svg text[did=7]').attr('fill', 'steelblue');
-					$('.topo svg text[did=5]').attr('fill', '#000');
-					$('.topo svg text[did=8]').attr('fill', '#aaa');
-					$('.topo svg line[lid=6]').attr('stroke', 'steelblue');
-					$('.topo svg line[lid=8]').attr('stroke', '#aaa');
+					$('.topo svg text[did=10]').attr('fill', 'steelblue');
+					$('.topo svg text[did=7]').attr('fill', '#000');
+					$('.topo svg text[did=11]').attr('fill', '#aaa');
+					$('.topo svg line[lid=9]').attr('stroke', 'steelblue');
+					$('.topo svg line[lid=10]').attr('stroke', '#aaa');
 					self.parent().css("background-color", "#aaa");
 				});
 			return false;
@@ -170,8 +175,22 @@
 		//DNS protect switch module
 		$("select").on('change', function(){
 			var state = $(this).val();
-			if(state == "异常") $("span#response").html("Remedy Server");
-			else $("span#response").html("DNS Server");
+			if(state == "异常") {
+				$("span#response").html("Remedy Server");
+				$('.topo svg text[did=1]').attr('fill', 'orange');
+				$('.topo svg text[did=9]').attr('fill', 'steelblue');
+				$('.topo svg text[did=8]').attr('fill', '#aaa');
+				$('.topo svg line[lid=7]').attr('stroke', 'steelblue');
+				$('.topo svg line[lid=6]').attr('stroke', '#aaa');
+			}
+			else {
+				$("span#response").html("DNS Server");
+				$('.topo svg text[did=1]').attr('fill', 'steelblue');
+				$('.topo svg text[did=9]').attr('fill', '#aaa');
+				$('.topo svg text[did=8]').attr('fill', 'steelblue');
+				$('.topo svg line[lid=7]').attr('stroke', '#aaa');
+				$('.topo svg line[lid=6]').attr('stroke', 'steelblue');		
+			}
 			$.ajax({
 				url: 'TODO',
 				dataType: 'jsonp',
