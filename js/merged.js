@@ -1,6 +1,15 @@
 (function(){
 	$().ready(function(){
 
+		var width = $('svg').width();
+		var height = $('svg').height();
+		//find merged logic picture and move it
+		d3.select('image')
+			.attr({
+				'x': width / 2, 'y': 0,
+				'height': height, 'width': height
+			});
+
 		//Fade in 'body'
 		$('body').animate({
 				'opacity': 1
@@ -9,9 +18,6 @@
 		});
 
 		//draw the network
-		var width = $('svg').width();
-		var height = $('svg').height();
-
 		var nodes = d3.range(1,13).map(function(i){
 			if(i < 4) return {name: "H" + i};
 			else if(i > 3 && i < 8) return {name: "S" + (i - 3)};
@@ -29,13 +35,13 @@
 		var force = d3.layout.force()
 			.nodes(nodes)
 			.links(links)
-			.size([width, height])
+			.size([width/2, height])
 			.linkDistance(100)
 			.charge(-300)
 			.gravity(0.05)
 			.start();
 
-		var svg_links = d3.selectAll('svg')
+		var svg_links = d3.select('svg')
 			.selectAll('line')
 			.data(links)
 			.enter()
@@ -46,7 +52,7 @@
 					return i+1;
 				}
 			});
-		var svg_nodes = d3.selectAll('svg')
+		var svg_nodes = d3.select('svg')
 			.selectAll('text')
 			.data(nodes)
 			.enter()
@@ -69,7 +75,7 @@
 				d.fixed = false;
 			})
 			.call(force.drag); //this line can be commented
-		var svg_texts = d3.selectAll('svg')
+		var svg_texts = d3.select('svg')
 			.selectAll('text.text')
 			.data(nodes)
 			.enter()
@@ -88,7 +94,7 @@
 				.attr("x2", function(d) { return d.target.x + 8; })
 				.attr("y2", function(d) { return d.target.y - 8; });
 			svg_nodes.attr({
-				'x': function(d) {return d.x = Math.max(20, Math.min(d.x, width-20));},
+				'x': function(d) {return d.x = Math.max(20, Math.min(d.x, width/2-20));},
 				'y': function(d) {return d.y = Math.max(20, Math.min(d.y, height-20));}
 			});
 			svg_texts.attr({
