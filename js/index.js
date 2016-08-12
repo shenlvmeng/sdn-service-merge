@@ -414,6 +414,12 @@
 			$('#container article:nth-child(4) svg line[lid='+ val +']').attr('stroke', 'steelblue');
 		});
 
+		//adjust the scroll bar
+		$("body").mousewheel(function(event, delta){
+			this.scrollLeft -= (delta * 50);
+			event.preventDefault();
+		});
+
 		var list = ['10.0.0.1', '10.0.0.2', '10.0.0.3'];
 		//add deny button: change color and send ban request
 		$("button.add_d").on('click', function(){			
@@ -583,6 +589,6 @@
 			}, 2000, 'easeOutCubic', function(){
 				window.location.href = "./merged.html";
 			});
-		})
+		});
 	});
 })();
