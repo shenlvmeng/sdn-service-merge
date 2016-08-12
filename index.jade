@@ -38,6 +38,9 @@ html(lang="zh-cn")
 				button.start
 					i.fa.fa-play-circle(aria-hidden=true)
 					="启动测试"
+				button.end
+					i.fa.fa-ban(aria-hidden=true)
+					="终止测试"
 			+column('Web app admin(Load Balance)')
 				p
 					span 开启负载均衡
@@ -46,14 +49,31 @@ html(lang="zh-cn")
 				button.start
 					i.fa.fa-play-circle(aria-hidden=true)
 					="启动测试"
+				button.end
+					i.fa.fa-ban(aria-hidden=true)
+					="终止测试"
 			+column('MMS admin(Billing)')
 				p H1 到 Web Server1 的流量已计费：
 				p H2 到 Web Server1 的流量已计费：
 				p H1 到 Web Server2 的流量已计费：
 				p H2 到 Web Server2 的流量已计费：
-				button.start_catch
+				button.start
 					i.fa.fa-play-circle(aria-hidden=true)
-					="获取流量"
+					="启动测试"
+				button.start_catch
+					i.fa.fa-wrench(aria-hidden=true)
+					="获取计费"
+			+column('DNS protect application')
+				p Host Status:
+					select
+						option 正常
+						option 异常
+				p DNS response: 
+					span#response
+				button.start
+					i.fa.fa-play-circle(aria-hidden=true)
+					="启动测试"
+
 		#merge
 			button#merge_b
 				i.fa.fa-rocket(aria-hidden=true)

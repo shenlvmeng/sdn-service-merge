@@ -176,25 +176,29 @@
 			.call(drawEllipse)
 			.call(drawLine)
 			.each(drawText);
-		var g2g1 = g2.select('g:nth-child(1)').append('g').attr('transform', 'translate('+ (width/6-25) +',30)');
+		var g2g1 = g2.select('g:nth-child(1)').append('g').attr('transform', 'translate('+ (width/6-14) +',30)');
 		g2g1.append('rect').attr({
-			'width': 40, 'height': 30, 'fill': 'coral'
+			'width': 35, 'height': 30, 'fill': 'coral'
 		});
 		g2g1.append('text').attr({
 			'fill': '#fff', 'font-size': "14",
 			'alignment-baseline': 'hanging',
-			'transform': 'translate(12,8)'
+			'transform': 'translate(10,8)'
 		}).text('LB');
+		g2g1.append('text').attr({
+			'fill': 'steelblue', 'font-size': "14",
+			'transform': 'translate(-20,10)'
+		}).text('80');
 		//console.log(g2.selectAll('g:nth-child(n)'));
 		g2.selectAll('g:not(:nth-child(5n+1))')
 			.each(function(d, i){
 				d3.select(this).append('text').attr({
 					'fill': 'steelblue', 'font-size': "14",
 					'alignment-baseline': 'hanging',
-					'transform': 'translate('+ (width/6-25) +',28)'
+					'transform': 'translate('+ (width/6-38) +',28)'
 				}).text(function(){
 					if(i == 0) return '5900';
-					else return '5900,22';
+					else return '5900,22,23';
 				});
 			});
 
@@ -214,7 +218,8 @@
 			})
 			.on('mouseover', mouseIn)
 			.on('mousemove', mouseMove)
-			.on('mouseout', mouseOut);
+			.on('mouseout', mouseOut)
+			.on('click', disp_prompt);
 		}
 
 		function drawEllipse(selection){
@@ -272,7 +277,8 @@
 					mouseIn(d3.select(this).text());
 				})
 				.on('mousemove', mouseMove)
-				.on('mouseout', mouseOut);
+				.on('mouseout', mouseOut)
+				.on('click', disp_prompt);
 		}
 
 		//add logic graph hint
@@ -282,6 +288,7 @@
 			.style('opacity', 0);
 		//element on listener callback function -- display tooltip
 		function mouseIn(d){
+			var d = d3.select(this).text() || d;
 			var content = "";
 			if(d == "Campus") content = ": H1, H2";
 			else if(d == "Web Server") 
@@ -289,7 +296,7 @@
 			else if(d == "Students") content = ": H1";
 			else if(d == "Teachers") content = ": H2";
 			else if(d == "DB") content = ": Database";
-			else content = "Unknown."
+			else content = ": Unknown."
 			tooltip.html(d+content)
 				.style({
 					'left': d3.event.pageX + 'px',
@@ -305,6 +312,18 @@
 		}
 		function mouseOut(){
 			tooltip.style('opacity', 0);
+		}
+
+		//change logic graph label
+		var oldLabel = [];
+		var newLabel = [];
+		function disp_prompt(e){
+			var new_label = prompt("请输入新的标签名","");
+			if (new_label != null && new_label != "" && d3.select(this).text() != new_label){
+				oldLabel.push(d3.select(this).text());
+				d3.select(this).text(new_label);
+				newLabel.push(new_label);
+			}
 		}
 
 		//paint some nodes and some links
@@ -378,6 +397,23 @@
 				}
 			});
 		});
+
+		//end button: invisibly kill a controller process
+		$("button.end").on('click', function(){
+			$.ajax({
+				url: 'http://localhost:8888/kill',
+				dataType: 'jsonp',
+				jsonpCallback: '_cb',
+				cache: false,
+				success: function(data){
+					var data = JSON.parse(data);
+					if(data.status == 'error') alert(data.message);
+				},
+				error: function(XHR, status, error){
+					console.log('error'+ status +" "+ error);
+				}
+			});
+		});
 		
 		//Load balance switch module
 		$("span.button").on('click', function(){
@@ -435,6 +471,13 @@
 
 		//Merge button
 		$("button#merge_b").on('click', function(){
+			if(!oldLabel.every(function(val){
+				return newLabel.indexOf(val) != -1;
+			})){
+				alert("融合失败！标签策略冲突。");
+				return false;
+			}
+
 			$('body').animate({
 				'opacity': 0
 			}, 2000, 'easeOutCubic', function(){
