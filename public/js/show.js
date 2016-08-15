@@ -1,5 +1,6 @@
 (function(){
 	$().ready(function(){
+		//draw the topology
 		var width = $('svg').width();
 		var height = $('svg').height();
 
@@ -90,60 +91,81 @@
 				d.fixed = true;
 			});
 
-		//switch button
-		$("span.button").on('click', function(){
-			var self = $(this);
-			var name = "";
-			if($('.title').html() == "Billing") name = "Billing";
-			else name = "Balance";
-
-			if(!self.css('margin-right') || self.css('margin-right') != "31px")
-				self.animate({
-					'margin-right': '31px'
-				},100,'swing',function(){
-					self.parent().css("background-color", "limegreen");
-					if(name == "Balance"){
-						[8,9].forEach(function(val){
-							$('svg text[did='+ val +']').attr('fill', 'green');
-						});
-						[6,9,10].forEach(function(val){
-							$('svg line[lid='+ val +']').attr('stroke', 'green');
-						});
-					} else if(name == "Billing"){
-						[1,2,4,5,7,9,10].forEach(function(val){
-							$('svg text[did='+ val +']').attr('fill', 'gold');
-						});
-						[1,2,4,6,8,9].foreach(function(val){
-							$('svg line[lid='+ val +']').attr('stroke', 'gold');
-						});
-					}
-					$.post("/modules", { name: name, status: 0 });
-				});
-			else
-				self.animate({
-					'margin-right': '0'
-				},100,'swing',function(){
-					self.parent().css("background-color", "#aaa");
-					if(name == "Balance"){
-						[8,9].forEach(function(val){
-							$('svg text[did='+ val +']').attr('fill', '#aaa');
-						});
-						[6,9,10].forEach(function(val){
-							$('svg line[lid='+ val +']').attr('stroke', '#aaa');
-						});
-					} else if(name == "Billing"){
-						[1,2,4,5,7,9,10].forEach(function(val){
-							$('svg text[did='+ val +']').attr('fill', '#aaa');
-						});
-						[1,2,4,6,8,9].foreach(function(val){
-							$('svg line[lid='+ val +']').attr('stroke', '#aaa');
-						});
-					}
-					$.post("/modules", { name: name, status: 1 });
-				});
-			return false;
+		//ajax update flow chart and fees
+		var refreshId = setInterval(function(){
+			$.ajax({
+				url: '/fee',
+				success: function(fee){
+					fee.forEach(function(val, i){
+						var tmpstr = $('#fee p:nth-child('+ (i+1) +')').html().substr(0,24);
+						$('#fee p:nth-child('+ (i+1) +')').html(tmpstr+'￥'+val);
+					});
+				}
+			});
+		}, 5000);
+		function fetchData(){
+			$.ajax({
+				url: '/flow',
+				success: function(point){
+					//shift old points
+					var series = chart.series[0],
+						shift  = series.data.length > 10;
+					//add a point
+					chart.series[0].addPoint(point, true, shift);
+					//call it after 5s
+					setTimeout(fetchData, 50000);
+				},
+				cache: false
+			});
+		}
+		var chart = new Highcharts.Chart({
+			chart: {
+				renderTo: 'flow',
+				defaultSeriesType: 'spline',
+				events: { load : fetchData }
+			},
+			xAxis: {
+				type: 'datatime',
+				tickPixelInterval: 10
+			},
+			yAxis: {
+				minPadding: 0.2,
+				maxPadding: 0.2,
+				title: {
+					text: "Flow data(Kb)"
+				}
+			},
+			series: [{
+				name: 'Flow data',
+				data: []
+			}]
 		});
 
+		var nodeMap = ["H1", "H2", "H3", "S1", "S2", "S3", "S4", "DB", "Web Server1", "Web Server2"];
+		//path search button
+		$("#path #search").on('click', function(){
+			var src = $("#path select:nth-child(1)").val();
+			var dst = $("#path select:nth-child(2)").val();
+			$.post('/path', {src: src, dst: dst}, function(data){
+				if(!data){
+					alert('Unknown path.');
+					return false;
+				}
+				data.nodes.forEach(function(val){
+					$('svg text[did='+ (val+1) +']').attr('fill', 'steelblue');
+				});
+				data.links.forEach(function(val){
+					$('svg line[lid='+ (val+1) +']').attr('stroke', 'steelblue');
+				});
+				var path = "";
+				$('#path p').html(function(){
+					data.nodes.forEach(function(val){
+						path += (nodeMap[val] + "->");
+					});
+					return path.slice(0,-2);
+				});
+			});
+		})
 		//merge button
 		$("button#merge_b").on('click', function(){
 			$.post('/modules', {}, function(data){
