@@ -6,7 +6,7 @@
 		var nodes = d3.range(1,11).map(function(i){
 			if(i < 4) return {name: "H" + i};
 			else if(i > 3 && i < 8) return {name: "S" + (i - 3)};
-			else if(i > 8 && i < 11) return {name: "Web Server" + (i-9)};
+			else if(i > 8 && i < 11) return {name: "Web Server" + (i-8)};
 			else return {name: "DB"};
 		});
 		var links = [{source: 0, target: 3}, {source: 1, target: 3},
@@ -19,7 +19,7 @@
 			.nodes(nodes)
 			.links(links)
 			.size([width, height])
-			.linkDistance(80)
+			.linkDistance(120)
 			.charge(-300)
 			.start();
 		//console.log(force.nodes());
@@ -42,7 +42,7 @@
 			.append('text')
 			.attr({
 				'font-family': 'FontAwesome',
-				'font-size': '20', 'fill': "#aaa",
+				'font-size': '30', 'fill': "#aaa",
 				'did': function(d, i){
 					return i+1;
 				}
@@ -90,11 +90,30 @@
 				d.fixed = true;
 			});
 
+		//prepainting
+		if($('.button').css('margin-right') == "31px"){
+			if($('.highlight a').html() == "Billing"){
+				[1,2,4,5,7,9,10].forEach(function(val){
+					$('svg text[did='+ val +']').attr('fill', 'orange');
+				});
+				[1,2,4,6,8,9].forEach(function(val){
+					$('svg line[lid='+ val +']').attr('stroke', 'orange');
+				});
+			} else {
+				[9,10].forEach(function(val){
+					$('svg text[did='+ val +']').attr('fill', 'green');
+				});
+				[8,9].forEach(function(val){
+					$('svg line[lid='+ val +']').attr('stroke', 'green');
+				});
+			}
+		}
+
 		//switch button
 		$("span.button").on('click', function(){
 			var self = $(this);
 			var name = "";
-			if($('.title').html() == "Billing") name = "Billing";
+			if($('.highlight a').html() == "Billing") name = "Billing";
 			else name = "Balance";
 
 			if(!self.css('margin-right') || self.css('margin-right') != "31px")
@@ -103,18 +122,18 @@
 				},100,'swing',function(){
 					self.parent().css("background-color", "limegreen");
 					if(name == "Balance"){
-						[8,9].forEach(function(val){
+						[9,10].forEach(function(val){
 							$('svg text[did='+ val +']').attr('fill', 'green');
 						});
-						[6,9,10].forEach(function(val){
+						[8,9].forEach(function(val){
 							$('svg line[lid='+ val +']').attr('stroke', 'green');
 						});
 					} else if(name == "Billing"){
 						[1,2,4,5,7,9,10].forEach(function(val){
-							$('svg text[did='+ val +']').attr('fill', 'gold');
+							$('svg text[did='+ val +']').attr('fill', 'orange');
 						});
-						[1,2,4,6,8,9].foreach(function(val){
-							$('svg line[lid='+ val +']').attr('stroke', 'gold');
+						[1,2,4,6,8,9].forEach(function(val){
+							$('svg line[lid='+ val +']').attr('stroke', 'orange');
 						});
 					}
 					$.post("/modules", { name: name, status: 0 });
@@ -125,17 +144,17 @@
 				},100,'swing',function(){
 					self.parent().css("background-color", "#aaa");
 					if(name == "Balance"){
-						[8,9].forEach(function(val){
+						[9,10].forEach(function(val){
 							$('svg text[did='+ val +']').attr('fill', '#aaa');
 						});
-						[6,9,10].forEach(function(val){
+						[8,9].forEach(function(val){
 							$('svg line[lid='+ val +']').attr('stroke', '#aaa');
 						});
 					} else if(name == "Billing"){
 						[1,2,4,5,7,9,10].forEach(function(val){
 							$('svg text[did='+ val +']').attr('fill', '#aaa');
 						});
-						[1,2,4,6,8,9].foreach(function(val){
+						[1,2,4,6,8,9].forEach(function(val){
 							$('svg line[lid='+ val +']').attr('stroke', '#aaa');
 						});
 					}

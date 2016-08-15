@@ -9,13 +9,13 @@ module.exports = function(app){
 		res.redirect('/firewall');
 	});
 	app.get('/firewall', function(req, res){
-		res.render('firewall', {title: 'Firewall', active: modules.indexOf('Firewall') != -1});
+		res.render('firewall', {title: 'Admin 1: Firewall', active: modules.indexOf('Firewall') != -1});
 	});
 	app.get('/balance', function(req, res){
-		res.render('others', {title: 'Load balance', active: modules.indexOf('Balance') != -1});
+		res.render('others', {title: 'Admin 2: Load balance', active: modules.indexOf('Balance') != -1});
 	});
 	app.get('/billing', function(req, res){
-		res.render('others', {title: 'Billing', active: modules.indexOf('Billing') != -1});
+		res.render('others', {title: 'Admin 3: Billing', active: modules.indexOf('Billing') != -1});
 	});
 	app.get('/merged', function(req, res){
 		request.post({
