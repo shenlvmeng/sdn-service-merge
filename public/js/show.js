@@ -7,7 +7,7 @@
 		var nodes = d3.range(1,11).map(function(i){
 			if(i < 4) return {name: "H" + i};
 			else if(i > 3 && i < 8) return {name: "S" + (i - 3)};
-			else if(i > 8 && i < 11) return {name: "Web Server" + (i-9)};
+			else if(i > 8 && i < 11) return {name: "Web Server" + (i-8)};
 			else return {name: "DB"};
 		});
 		var links = [{source: 0, target: 3}, {source: 1, target: 3},
@@ -106,10 +106,11 @@
 		function fetchData(){
 			$.ajax({
 				url: '/flow',
-				success: function(point){
+				success: function(fee){
 					//shift old points
 					var series = chart.series[0],
-						shift  = series.data.length > 10;
+						shift  = series.data.length > 10,
+						point = {time: Date.parse(new Date()), data: fee};
 					//add a point
 					chart.series[0].addPoint(point, true, shift);
 					//call it after 5s

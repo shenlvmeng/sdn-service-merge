@@ -51,7 +51,10 @@ module.exports = function(app){
 	});
 	app.get('/fee',function(req, res){
 		request('http://localhost:8888/fee', function(err, response, body){
-			if(err) console.error("Fetch fee error: ", err);
+			if(err){
+				console.error("Fetch fee error: ", err);
+				res.send({flow: 0})
+			}
 			res.send(body);
 		});
 	});

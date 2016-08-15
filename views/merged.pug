@@ -1,0 +1,42 @@
+doctype html
+html(lang="zh-cn")
+	head
+		title 融合结果
+		meta(charset="utf-8")
+		link(rel='stylesheet' type='text/css' href='/css/style.css')
+		script(src='/js/d3.min.js')
+		script(src='/js/jquery-1.12.4.min.js')
+		script(src='/js/merged.js')
+		link(rel='stylesheet' type='text/css' href='/css/font-awesome.min.css')
+		style
+			include ../public/css/patch.css
+	body
+		#sidebar
+			#tab
+				a(href='/firewall') Firewall
+			#tab
+				a(href='/balance') Load Balance
+			#tab
+				a(href='/billing') Billing
+			#tab.highlight
+				a(href='/merged') Merge Results
+			#tab
+				a(href='/show') Experiments
+
+		#container
+			header
+				span=title
+			
+			#graphs
+				.width50
+					svg.topo
+				.width50
+					.graph
+						img
+			
+			#graphs
+				.width50
+					.graph
+						img
+				.width50
+					svg.graph

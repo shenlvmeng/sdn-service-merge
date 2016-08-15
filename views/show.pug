@@ -1,0 +1,60 @@
+doctype html
+html(lang="zh-cn")
+	head
+		title 实验演示
+		meta(charset='utf-8')
+		link(rel='stylesheet' type='text/css' href='/css/style.css')
+		script(src='/js/jquery-1.12.4.min.js')
+		script(src='/js/d3.min.js')
+		script(src='/js/show.js')
+		script(src='/js/highcharts.js')
+		link(rel='stylesheet' type='text/css' href='/css/font-awesome.min.css')
+	body
+		#sidebar
+			#tab
+				a(href='/firewall') Firewall
+			#tab
+				a(href='/balance') Load Balance
+			#tab
+				a(href='/billing') Billing
+			#tab
+				a(href='/merged') Merge Results
+			#tab.highlight
+				a(href='/show') Experiments
+			button#merge_b
+				i.fa.fa-rocket(aria-hidden=true)
+				!="Merge!"
+
+		#container
+			header
+				span Experiment Presentation
+			
+			#graphs
+				.width50
+					svg.topo
+				.width50
+					//- flow
+					#flow
+			
+			#graphs
+				.width50#path
+					span 起始端:  
+						select
+							option(value=0) H1
+							option(value=1) H2
+							option(value=2) H3
+					span 目的端:
+						select
+							option(value=7) DB
+							option(value=8) Web Server 1
+							option(value=9) Web Server 2
+					button#search
+						i.fa.fa-search(aria-hidden=true)
+						="Search"
+					p
+
+				.width50
+					p H1 到 Web Server1 的流量已计费：
+					p H2 到 Web Server1 的流量已计费：
+					p H1 到 Web Server2 的流量已计费：
+					p H2 到 Web Server2 的流量已计费：

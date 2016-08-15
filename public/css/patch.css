@@ -1,0 +1,6 @@
+#graphs{
+	height: 330px;
+}
+#graphs svg.topo, #graphs svg.graph{
+	height: 320px;
+}

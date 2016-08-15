@@ -47,11 +47,13 @@ html(lang="zh-cn")
 
 
 			#start
-				p
-					span="开启"+title
 				if active
-					span.shift(style="background-color: limegreen")
-						span.button(style="margin-right: 31px")
+					p
+						span 开启Firewall
+						span.shift(style="background-color: limegreen")
+							span.button(style="margin-right: 31px")
 				else
-					span.shift
-						span.button
+					p
+						span 开启Firewall
+						span.shift
+							span.button

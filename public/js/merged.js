@@ -5,13 +5,13 @@
 	});
 
 	$().ready(function(){
-		var width = $('svg_t').width();
-		var height = $('svg_t').height();
+		var width = $('svg.topo').width();
+		var height = $('svg.topo').height();
 
 		var nodes = d3.range(1,11).map(function(i){
 			if(i < 4) return {name: "H" + i};
 			else if(i > 3 && i < 8) return {name: "S" + (i - 3)};
-			else if(i > 8 && i < 11) return {name: "Web Server" + (i-9)};
+			else if(i > 8 && i < 11) return {name: "Web Server" + (i-8)};
 			else return {name: "DB"};
 		});
 		var links = [{source: 0, target: 3}, {source: 1, target: 3},
@@ -132,11 +132,11 @@
 			})
 			.append('path')
 			.attr('d', 'M0,-5L10,0L0,5');
-		width = $('svg_l').width();
-		height = $('svg_l').height();
+		width = $('svg.graph').width();
+		height = $('svg.graph').height();
 
-		nodes = graph.nodes;
-		links = graph.links;
+		//nodes = graph.nodes;
+		//links = graph.links;
 		var force2 = d3.layout.force()
 			.nodes(nodes)
 			.links(links)
@@ -189,20 +189,17 @@
 				return d.name;
 			});
 		force2.on('tick', function(){
-			svg_links2.attr("x1", function(d) { return d.source.x + 10; })
-				.attr("y1", function(d) { return d.source.y + 20; })
-				.attr("x2", function(d) { return d.target.x + 10; })
-				.attr("y2", function(d) { return d.target.y + 20; });
+			svg_links2.attr("x1", function(d) { return d.source.x; })
+				.attr("y1", function(d) { return d.source.y; })
+				.attr("x2", function(d) { return d.target.x; })
+				.attr("y2", function(d) { return d.target.y; });
 			svg_nodes2.attr({
-				'x': function(d) {return d.x = Math.max(50, Math.min(d.x, width -50));},
-				'y': function(d) {return d.y = Math.max(50, Math.min(d.y, height-50));}
+				'cx': function(d) {return d.x = Math.max(50, Math.min(d.x, width -50));},
+				'cy': function(d) {return d.y = Math.max(50, Math.min(d.y, height-50));}
 			});
 			svg_texts2.attr({
-				'x': function(d) {
-					if(d.type == "node") return d.x + 50;
-					else return d.x + 20;
-				},
-				'y': function(d) { return d.y + 20; }
+				'x': function(d) { return d.x; },
+				'y': function(d) { return d.y; }
 			});
 		});
 		//add node fixed
