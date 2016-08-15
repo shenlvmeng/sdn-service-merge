@@ -1,4 +1,4 @@
-(function(){
+
 	$().ready(function(){
 		var width = $('svg').width();
 		var height = $('svg').height();
@@ -6,7 +6,7 @@
 		var nodes = d3.range(1,11).map(function(i){
 			if(i < 4) return {name: "H" + i};
 			else if(i > 3 && i < 8) return {name: "S" + (i - 3)};
-			else if(i > 8 && i < 11) return {name: "Web Server" + (i-9)};
+			else if(i > 8 && i < 11) return {name: "Web Server" + (i-8)};
 			else return {name: "DB"};
 		});
 		var links = [{source: 0, target: 3}, {source: 1, target: 3},
@@ -19,7 +19,7 @@
 			.nodes(nodes)
 			.links(links)
 			.size([width, height])
-			.linkDistance(80)
+			.linkDistance(120)
 			.charge(-300)
 			.start();
 		//console.log(force.nodes());
@@ -30,7 +30,10 @@
 			.enter()
 			.append('line')
 			.attr({
-				'stroke': '#ccc', 'stroke-width': 2,
+				'stroke': function(d, i){
+					if(i < 3) return "steelblue";
+					else return "#aaa";
+				}, 'stroke-width': 2,
 				'lid': function(d, i){
 					return i+1;
 				}
@@ -42,7 +45,11 @@
 			.append('text')
 			.attr({
 				'font-family': 'FontAwesome',
-				'font-size': '20', 'fill': "#aaa",
+				'font-size': '30',
+				'fill': function(d, i){
+					if(i < 3) return "steelblue";
+					else return "#aaa";
+				},
 				'did': function(d, i){
 					return i+1;
 				}
@@ -150,5 +157,4 @@
 				});
 			});		
 		});
-	};
-})();
+	});

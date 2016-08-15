@@ -1,19 +1,25 @@
+var request = require('request');
+
 module.exports = function(app){
+	var modules = [];
+	var module_graph = {};
+	var flowPath = {src: "", dst: ""};
+
 	app.get('/', function(req, res){
 		res.redirect('/firewall');
 	});
 	app.get('/firewall', function(req, res){
-		res.render('firewall', {title: 'Firewall', active: module_graph.indexOf('Firewall') != -1});
+		res.render('firewall', {title: 'Firewall', active: modules.indexOf('Firewall') != -1});
 	});
 	app.get('/balance', function(req, res){
-		res.render('others', {title: 'Load balance', active: module_graph.indexOf('Balance') != -1});
+		res.render('others', {title: 'Load balance', active: modules.indexOf('Balance') != -1});
 	});
 	app.get('/billing', function(req, res){
-		res.render('others', {title: 'Billing', active: module_graph.indexOf('Billing') != -1});
+		res.render('others', {title: 'Billing', active: modules.indexOf('Billing') != -1});
 	});
 	app.get('/merged', function(req, res){
 		request.post({
-			url: 'http://locahost:8888/modules',
+			url: 'http://localhost:8888/modules',
 			form: {module: modules}
 		}, function(err, req, body){
 			if(err) return console.error('Merge failed:', err);

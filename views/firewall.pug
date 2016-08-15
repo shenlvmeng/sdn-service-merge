@@ -1,0 +1,57 @@
+doctype html
+html(lang="zh-cn")
+	head
+		title 业务融合演示
+		meta(charset='utf-8')
+		link(rel='stylesheet' type='text/css' href='/css/style.css')
+		script(src='/js/jquery-1.12.4.min.js')
+		script(src='/js/d3.min.js')
+		script(src='/js/firewall.js')
+		script(src='/js/jquery.easing.min.js')
+		link(rel='stylesheet' type='text/css' href='/css/font-awesome.min.css')
+	body
+		#sidebar
+			#tab.highlight
+				a(href='/firewall') Firewall
+			#tab
+				a(href='/balance') Load Balance
+			#tab
+				a(href='/billing') Billing
+			#tab
+				a(href='/merged') Merge Results
+			#tab
+				a(href='/show') Show			
+			button#merge_b
+				i.fa.fa-rocket(aria-hidden=true)
+				="Merge!"
+
+		#container
+			header
+				span=title
+
+			#graphs
+				.width50
+					svg.topo
+				.width50
+					.table
+						img 
+					.graph
+						img
+			
+			#panel
+				.width50 Deny list: 
+					input(type='text' name='deny')
+					button.add_d
+						i.fa.fa-plus-circle(aria-hidden=true)
+						="添加"
+				.width50 Allow list:
+					input(type='text' name='allow')
+					button.add_a 
+						i.fa.fa-plus-circle(aria-hidden=true)
+						="添加"
+			
+			#start
+				p
+					span 开启负载均衡
+					span.shift
+						span.button
