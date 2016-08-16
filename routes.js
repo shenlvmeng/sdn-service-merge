@@ -46,14 +46,17 @@ module.exports = function(app){
 			url: 'http://localhost:8888/modules',
 			form: {module: modules}
 		}, function(err, req, body){
-			if(err) return console.error('Merge failed:', err);
+			if(err){
+				console.error('Merge failed:', err);
+				res.end();
+			}
 			module_graph = body;
 			console.log("Python server responses with body: ", body);
 		});
-
 		res.render('merged', {title: 'Merge results'});
 	});
 	app.get('/graph', function(req, res){
+		console.log("Merged logic graph: ", module_graph);
 		res.send(module_graph);
 	});
 

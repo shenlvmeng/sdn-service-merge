@@ -47,7 +47,7 @@
 			.append('text')
 			.attr({
 				'font-family': 'FontAwesome',
-				'font-size': '20', 'fill': "#aaa",
+				'font-size': '25', 'fill': "#aaa",
 				'did': function(d, i){
 					return i+1;
 				}
