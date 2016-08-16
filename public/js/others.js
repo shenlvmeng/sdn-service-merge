@@ -163,6 +163,11 @@
 			return false;
 		});
 
+		//fire a terminal
+		$("button#terminal").on('click', function(){
+			$.get('/terminal');
+		});
+
 		//merge button
 		$("button#merge_b").on('click', function(){
 			$.get('/modules', function(data){

@@ -211,5 +211,10 @@
 				d.fixed = true;
 			});
 
+		//fire a terminal
+		$("button#terminal").on('click', function(){
+			$.get('/terminal');
+		});
+		
 	});
 })();

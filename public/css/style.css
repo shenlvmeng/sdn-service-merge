@@ -44,14 +44,20 @@ body, html{
 #sidebar .highlight a{
 	color: steelblue;
 }
-#sidebar button#merge_b{
+#terminal, #merge_b{
 	position: fixed;
 	top: 95%;
-	left: 50px;
-	background-color: steelblue;
-	min-width: 5em;
 	height: 2em;
 	font-size: 15px;
+}
+#sidebar button#terminal{
+	background-color: orange;
+	left: 95px;
+}
+#sidebar button#merge_b{
+	left: 5px;
+	background-color: steelblue;
+	min-width: 5em;
 }
 #container{
 	margin-left: 201px;
@@ -154,9 +160,6 @@ button.add_d, button.end{
 }
 button.add_a, button.start, button#search{
 	background-color: limegreen;
-}
-button.start_catch{
-	background-color: orange;
 }
 button i{
 	margin-right: .4em;

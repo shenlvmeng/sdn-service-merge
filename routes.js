@@ -1,4 +1,5 @@
 var request = require('request');
+var exec = require('child_process').exec;
 
 module.exports = function(app){
 	var modules = [];
@@ -118,5 +119,16 @@ module.exports = function(app){
 			modules.splice(modules.indexOf(module), 1);
 		console.log("modules: ", modules)
 		res.send(modules);
+	});
+
+	//fire a terminal
+	app.get('/terminal', function(req, res){
+		var sys = process.platform;
+		var cmd = 'gnome-terminal';
+		exec(cmd,(error,stdout,stderr) => {
+			if(error)
+				console.error("exec error: ", error);
+			res.end();
+		});
 	});
 }

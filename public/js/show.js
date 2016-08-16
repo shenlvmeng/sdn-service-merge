@@ -171,5 +171,11 @@
 			});
 		})
 		//merge button -- canceled
+
+		//fire a terminal
+		$("button#terminal").on('click', function(){
+			$.get('/terminal');
+		});
+		
 	});
 })();
