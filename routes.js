@@ -20,7 +20,7 @@ module.exports = function(app){
 			type  = req.body.type,
 			index = req.body.index;
 		request.post({
-			url: 'http://locahost:8888/firewall',
+			url: 'http://localhost:5000/firewall',
 			form: {ip: ip, type: type}
 		}, function(err){
 			if(err) console.error('Post firewall failed:', err);
@@ -44,7 +44,7 @@ module.exports = function(app){
 	//site 4
 	app.get('/merged', function(req, res){
 		request.post({
-			url: 'http://localhost:8888/modules',
+			url: 'http://localhost:5000/modules',
 			form: {module: modules}
 		}, function(err, req, body){
 			if(err){
@@ -72,7 +72,7 @@ module.exports = function(app){
 		flowPath.dst = dst;
 		console.log("FlowPath: ", flowPath);
 		request.post({
-			url: 'http://localhost:8888/path',
+			url: 'http://localhost:5000/path',
 			form: {src: src, dst: dst}
 		}, function(err, req, body){
 			if(err){
@@ -87,7 +87,7 @@ module.exports = function(app){
 			res.send({flow: 0});
 		else{
 			request.post({
-				url: 'http://localhost:8888/flow',
+				url: 'http://localhost:5000/flow',
 				form: {src: flowPath.src, dst: flowPath.dst}
 			}, function(err, req, body){
 				if(err){
@@ -98,7 +98,7 @@ module.exports = function(app){
 		}
 	});
 	app.get('/fee',function(req, res){
-		request('http://localhost:8888/fee', function(err, response, body){
+		request('http://localhost:5000/fee', function(err, response, body){
 			if(err){
 				console.error("Fetch fee error: ", err);
 				res.send([0,0,0,0]);
@@ -117,7 +117,7 @@ module.exports = function(app){
 		if(operate == 1 && modules.indexOf(module) == -1) modules.push(module);
 		else if(operate == 0 && modules.indexOf(module) != -1) modules.splice(modules.indexOf(module), 1);
 		request.post({
-			url: 'http://localhost:8888/module_state',
+			url: 'http://localhost:5000/module_state',
 			form: {module: module, state: operate}
 		}, function(err, req, body){
 			if(err) console.error('Modules state transfer failed:', err);
