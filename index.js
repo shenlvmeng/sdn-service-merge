@@ -13,6 +13,10 @@ app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function (req, res, next) {
+	console.log('Handle request to '+ req.path +'. Method: '+req.method);
+	next();
+});
 routes(app);
 
 app.listen(app.get('port'), function(){

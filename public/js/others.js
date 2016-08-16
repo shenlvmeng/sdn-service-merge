@@ -136,7 +136,7 @@
 							$('svg line[lid='+ val +']').attr('stroke', 'orange');
 						});
 					}
-					$.post("/modules", { name: name, status: 0 });
+					$.post("/modules", { name: name, status: 1 });
 				});
 			else
 				self.animate({
@@ -158,7 +158,7 @@
 							$('svg line[lid='+ val +']').attr('stroke', '#aaa');
 						});
 					}
-					$.post("/modules", { name: name, status: 1 });
+					$.post("/modules", { name: name, status: 0 });
 				});
 			return false;
 		});

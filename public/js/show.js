@@ -43,7 +43,7 @@
 			.append('text')
 			.attr({
 				'font-family': 'FontAwesome',
-				'font-size': '20', 'fill': "#aaa",
+				'font-size': '25', 'fill': "#aaa",
 				'did': function(d, i){
 					return i+1;
 				}
@@ -110,11 +110,11 @@
 					//shift old points
 					var series = chart.series[0],
 						shift  = series.data.length > 10,
-						point = {time: Date.parse(new Date()), data: fee};
+						point = [Date.now()+3600*8000, fee.flow];
 					//add a point
 					chart.series[0].addPoint(point, true, shift);
 					//call it after 5s
-					setTimeout(fetchData, 50000);
+					setTimeout(fetchData, 5000);
 				},
 				cache: false
 			});
@@ -122,12 +122,14 @@
 		var chart = new Highcharts.Chart({
 			chart: {
 				renderTo: 'flow',
-				defaultSeriesType: 'spline',
 				events: { load : fetchData }
 			},
+			title:{
+				text: '路径实时流量'
+			},
 			xAxis: {
-				type: 'datatime',
-				tickPixelInterval: 10
+				type: 'datetime',
+				tickPixelInterval: 150
 			},
 			yAxis: {
 				minPadding: 0.2,
@@ -145,9 +147,10 @@
 		var nodeMap = ["H1", "H2", "H3", "S1", "S2", "S3", "S4", "DB", "Web Server1", "Web Server2"];
 		//path search button
 		$("#path #search").on('click', function(){
-			var src = $("#path select:nth-child(1)").val();
-			var dst = $("#path select:nth-child(2)").val();
+			var src = $("#path span:nth-child(1) select").val();
+			var dst = $("#path span:nth-child(2) select").val();
 			$.post('/path', {src: src, dst: dst}, function(data){
+				//data = {nodes: [0,3,4,5,7], links: [0,3,4,6]};
 				if(!data){
 					alert('Unknown path.');
 					return false;

@@ -144,11 +144,8 @@ button{
 button.add_d, button.end{
 	background-color: tomato; 
 }
-button.add_a, button.start{
+button.add_a, button.start, button#search{
 	background-color: limegreen;
-}
-button#search{
-	background-color: steelblue;
 }
 button.start_catch{
 	background-color: orange;

@@ -1,4 +1,4 @@
-
+(function(){
 	$().ready(function(){
 		var width = $('svg').width();
 		var height = $('svg').height();
@@ -30,10 +30,7 @@
 			.enter()
 			.append('line')
 			.attr({
-				'stroke': function(d, i){
-					if(i < 3) return "steelblue";
-					else return "#aaa";
-				}, 'stroke-width': 2,
+				'stroke': "#aaa", 'stroke-width': 2,
 				'lid': function(d, i){
 					return i+1;
 				}
@@ -46,10 +43,7 @@
 			.attr({
 				'font-family': 'FontAwesome',
 				'font-size': '30',
-				'fill': function(d, i){
-					if(i < 3) return "steelblue";
-					else return "#aaa";
-				},
+				'fill': "#aaa",
 				'did': function(d, i){
 					return i+1;
 				}
@@ -97,9 +91,32 @@
 				d.fixed = true;
 			});
 
+		//prepainting
+		$.ajax({
+			url: "/firelist",
+			success: function(data){
+				[1,2,3].forEach(function(val){
+					$('svg text[did='+ val +']').attr('fill', 'steelblue');
+					$('svg line[lid='+ val +']').attr('stroke', 'steelblue');
+				});
+				if(data){
+					data.forEach(function(val){
+						val = parseInt(val);
+						$('svg text[did='+ (val+1) +']').attr('fill', 'red');
+						$('svg line[lid='+ (val+1) +']').attr('stroke', 'red');
+					});
+				}
+			}
+		});
+
 		var list = ['10.0.0.1', '10.0.0.2', '10.0.0.3'];
 		//add deny button: change color and send ban request
-		$("button.add_d").on('click', function(){			
+		$("button.add_d").on('click', function(){
+			var self = $('.button');
+			if(!self.css('margin-right') || self.css('margin-right') != "31px"){
+				alert("请先开启防火墙！");
+				return false;
+			}
 			var d_ip = $(this).parent().find('input').val().trim();
 			var index = list.indexOf(d_ip);
 			if(index == -1) alert('Unknown host ip!');
@@ -107,11 +124,16 @@
 				$('svg text[did='+ (index+1) +']').attr('fill', 'red');
 				$('svg line[lid='+ (index+1) +']').attr('stroke', 'red');
 				//some ajax request
-				$.post("/firewall", { ip: d_ip, type: 'deny' });
+				$.post("/firewall", { ip: d_ip, type: 'deny', index: index });
 			};
 		});
 		//add allow button: change color and send allow request
 		$("button.add_a").on('click', function(){
+			var self = $('.button');
+			if(!self.css('margin-right') || self.css('margin-right') != "31px"){
+				alert("请先开启防火墙！");
+				return false;
+			}
 			var a_ip = $(this).parent().find('input').val().trim();
 			var index = list.indexOf(a_ip);
 			if(index == -1) alert('Unknown host ip!');
@@ -119,7 +141,7 @@
 				$('svg text[did='+ (index+1) +']').attr('fill', 'steelblue');
 				$('svg line[lid='+ (index+1) +']').attr('stroke', 'steelblue');
 				//some ajax request
-				$.post("/firewall", { ip: a_ip, type: 'allow' });
+				$.post("/firewall", { ip: a_ip, type: 'allow', index: index });
 			};
 		});
 
@@ -131,14 +153,18 @@
 					'margin-right': '31px'
 				},100,'swing',function(){
 					self.parent().css("background-color", "limegreen");
-					$.post("/modules", { name: "Firewall", status: 0 });
+					$.post("/modules", { name: "Firewall", status: 1 });
 				});
 			else
 				self.animate({
 					'margin-right': '0'
 				},100,'swing',function(){
 					self.parent().css("background-color", "#aaa");
-					$.post("/modules", { name: "Firewall", status: 1 });				
+					$.post("/modules", { name: "Firewall", status: 0 });
+					[1,2,3].forEach(function(val){
+						$('svg text[did='+ val +']').attr('fill', 'steelblue');
+						$('svg line[lid='+ val +']').attr('stroke', 'steelblue');
+					});
 				});
 			return false;
 		});
@@ -158,3 +184,4 @@
 			});		
 		});
 	});
+})();

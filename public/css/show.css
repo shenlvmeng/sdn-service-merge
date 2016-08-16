@@ -1,0 +1,35 @@
+.graphs{
+	height: 600px;
+	padding: 1% 5%;
+}
+.graphs svg{
+	width: 100%;
+	height: 580px;
+}
+.graphs .width50:nth-child(1), .text .width50:nth-child(1){
+	border-right: 1px solid #aaa;
+}
+.text{
+	border-top: 1px solid #ddd;
+	padding: 1% 5%;
+	font-weight: bold;
+	font-family: Arial, Microsoft Yahei;
+}
+#path, #fee{
+	height: 200px;
+}
+#path p{
+	font-weight: lighter;
+	font-style: oblique;
+	font-family: Consolas;
+}
+select{
+	margin: 0 1em;
+	height: 2em;
+	width: 5em;
+	border-radius: 2px;
+	font-size: 14px;
+}
+button#search{
+	margin-left: 1em;
+}
