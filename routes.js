@@ -115,9 +115,14 @@ module.exports = function(app){
 			operate= req.body.status;
 		if(module == "Firewall" && operate == 0) denyList = [];
 		if(operate == 1 && modules.indexOf(module) == -1) modules.push(module);
-		else if(operate == 0 && modules.indexOf(module) != -1)
-			modules.splice(modules.indexOf(module), 1);
-		console.log("modules: ", modules)
+		else if(operate == 0 && modules.indexOf(module) != -1) modules.splice(modules.indexOf(module), 1);
+		request.post({
+			url: 'http://localhost:8888/module_state',
+			form: {module: module, state: operate}
+		}, function(err, req, body){
+			if(err) console.error('Modules state transfer failed:', err);
+		});
+		console.log("modules: ", modules);
 		res.send(modules);
 	});
 

@@ -107,6 +107,11 @@
 					$('svg line[lid='+ val +']').attr('stroke', 'green');
 				});
 			}
+		} else {
+			if($('.highlight a').html() != "Billing"){
+				$('svg text[did=9]').attr('fill', 'steelblue');
+				$('svg line[lid=8]').attr('stroke', 'steelblue');
+			}
 		}
 
 		//switch button
@@ -144,12 +149,10 @@
 				},100,'swing',function(){
 					self.parent().css("background-color", "#aaa");
 					if(name == "Balance"){
-						[9,10].forEach(function(val){
-							$('svg text[did='+ val +']').attr('fill', '#aaa');
-						});
-						[8,9].forEach(function(val){
-							$('svg line[lid='+ val +']').attr('stroke', '#aaa');
-						});
+						$('svg text[did=10]').attr('fill', '#aaa');
+						$('svg line[lid=9]').attr('stroke', '#aaa');
+						$('svg text[did=9]').attr('fill', 'steelblue');
+						$('svg line[lid=8]').attr('stroke', 'steelblue');
 					} else if(name == "Billing"){
 						[1,2,4,5,7,9,10].forEach(function(val){
 							$('svg text[did='+ val +']').attr('fill', '#aaa');
