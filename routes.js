@@ -105,12 +105,14 @@ module.exports = function(app){
 		});
 	});
 
-	//switch button
+	//switch button & merge button
+	app.get('/modules', function(req, res){
+		res.send(modules);
+	});
 	app.post('/modules', function(req, res){
 		var module = req.body.name,
 			operate= req.body.status;
 		if(module == "Firewall" && operate == 0) denyList = [];
-		if(!module) res.send(modules);
 		if(operate == 1 && modules.indexOf(module) == -1) modules.push(module);
 		else if(operate == 0 && modules.indexOf(module) != -1)
 			modules.splice(modules.indexOf(module), 1);

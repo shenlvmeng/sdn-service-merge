@@ -27,8 +27,16 @@ body, html{
 	color: #333;
 	text-decoration: none;
 }
-#sidebar #tab:nth-child(1){
-	margin-top: 25px;
+#sidebar a.logo{
+	font-size: 1.6em;
+	font-style: italic;
+	letter-spacing: 3px;
+	color: #000;
+	font-weight: lighter;
+	background-color: cornsilk;
+}
+#sidebar #tab:nth-child(2){
+	margin-top: 5px;
 }
 #sidebar .highlight{
 	background-color: #eee;

@@ -165,7 +165,7 @@
 
 		//merge button
 		$("button#merge_b").on('click', function(){
-			$.post('/modules', {}, function(data){
+			$.get('/modules', function(data){
 				if(data.length == 0){
 					alert("模块为空！");
 					return false;

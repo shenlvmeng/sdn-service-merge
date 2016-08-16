@@ -6,12 +6,15 @@ html(lang="zh-cn")
 		link(rel='stylesheet' type='text/css' href='/css/style.css')
 		script(src='/js/d3.min.js')
 		script(src='/js/jquery-1.12.4.min.js')
+		script(src='/js/jquery.easing.min.js')
 		script(src='/js/merged.js')
 		link(rel='stylesheet' type='text/css' href='/css/font-awesome.min.css')
 		style
 			include ../public/css/patch.css
-	body
+	body(style='opacity: 0')
 		#sidebar
+			#tab
+				a.logo(href='#') 超能陆战队
 			#tab
 				a(href='/firewall') Firewall
 			#tab

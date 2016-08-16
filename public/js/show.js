@@ -170,19 +170,6 @@
 				});
 			});
 		})
-		//merge button
-		$("button#merge_b").on('click', function(){
-			$.post('/modules', {}, function(data){
-				if(data.length == 0){
-					alert("模块为空！");
-					return false;
-				}
-				$('body').animate({
-					'opacity': 0
-				}, 1500, 'easeOutCubic', function(){
-					window.location.href = "/merged";
-				});
-			});		
-		});
+		//merge button -- canceled
 	});
 })();

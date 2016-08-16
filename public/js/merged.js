@@ -5,6 +5,9 @@
 	});
 
 	$().ready(function(){
+		$('body').animate({
+			'opacity': 1
+		}, 2000, 'easeInCubic');
 		var width = $('svg.topo').width();
 		var height = $('svg.topo').height();
 

@@ -1,7 +1,7 @@
 doctype html
 html(lang="zh-cn")
 	head
-		title="业务融合演示-"+title
+		title="业务融合演示-"+abbre
 		meta(charset='utf-8')
 		link(rel='stylesheet' type='text/css' href='/css/style.css')
 		script(src='/js/jquery-1.12.4.min.js')
@@ -12,6 +12,8 @@ html(lang="zh-cn")
 		
 	body
 		#sidebar
+			#tab
+				a.logo(href='#') 超能陆战队
 			#tab
 				a(href='/firewall') Firewall
 			if title == 'Admin 3: Billing'
