@@ -51,7 +51,7 @@ module.exports = function(app){
 			if(err){
 				console.error('Merge failed:', err);
 			}
-			module_graph = body;
+			module_graph = JSON.parse(body);
 			console.log("Python server responses with body: ", body);
 		});
 		res.render('merged', {title: 'Merge results'});
@@ -63,6 +63,8 @@ module.exports = function(app){
 
 	//site 5
 	app.get('/show', function(req, res){
+		flowPath.src = "";
+		flowPath.dst = "";
 		res.render('show');
 	});
 	app.post('/path', function(req, res){
@@ -79,7 +81,11 @@ module.exports = function(app){
 				console.error('Path search failed:', err);
 				res.end();
 			}
-			else res.send({nodes: body.nodes, links: body.links});
+			else {
+				body = JSON.parse(body);
+				res.send({nodes: body.nodes, links: body.links});
+			}
+			console.log("Path response: ", body);
 		});
 	});
 	app.get('/flow', function(req, res){
@@ -93,7 +99,10 @@ module.exports = function(app){
 				if(err){
 					console.error('Getting flow statistics failed:', err);
 					res.send({flow: 0});
-				} else res.send(body);
+				} else{
+					body = JSON.parse(body);
+					res.send(body);
+				}
 			});
 		}
 	});
@@ -102,7 +111,11 @@ module.exports = function(app){
 			if(err){
 				console.error("Fetch fee error: ", err);
 				res.send([0,0,0,0]);
-			} else res.send(body);
+			} else {
+				body = JSON.parse(body);
+				res.send(body);
+			}
+			console.log("Fee response: ", body);
 		});
 	});
 

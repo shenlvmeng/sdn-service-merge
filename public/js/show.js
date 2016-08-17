@@ -106,11 +106,11 @@
 		function fetchData(){
 			$.ajax({
 				url: '/flow',
-				success: function(fee){
+				success: function(flow_m){
 					//shift old points
 					var series = chart.series[0],
 						shift  = series.data.length > 10,
-						point = [Date.now()+3600*8000, fee.flow];
+						point = [Date.now()+3600*8000, parseInt(flow_m.flow)];
 					//add a point
 					chart.series[0].addPoint(point, true, shift);
 					//call it after 5s
@@ -156,15 +156,15 @@
 					return false;
 				}
 				data.nodes.forEach(function(val){
-					$('svg text[did='+ (val+1) +']').attr('fill', 'steelblue');
+					$('svg text[did='+ val +']').attr('fill', 'steelblue');
 				});
 				data.links.forEach(function(val){
-					$('svg line[lid='+ (val+1) +']').attr('stroke', 'steelblue');
+					$('svg line[lid='+ val +']').attr('stroke', 'steelblue');
 				});
 				var path = "";
 				$('#path p').html(function(){
 					data.nodes.forEach(function(val){
-						path += (nodeMap[val] + "->");
+						path += (nodeMap[val-1] + "->");
 					});
 					return path.slice(0,-2);
 				});
