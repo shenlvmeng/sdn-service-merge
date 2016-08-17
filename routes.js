@@ -43,13 +43,13 @@ module.exports = function(app){
 
 	//site 4
 	app.get('/merged', function(req, res){
+		if(modules.length == 0) res.redirect('/firewall');
 		request.post({
 			url: 'http://localhost:5000/modules',
 			form: {module: modules}
 		}, function(err, req, body){
 			if(err){
 				console.error('Merge failed:', err);
-				res.end();
 			}
 			module_graph = body;
 			console.log("Python server responses with body: ", body);

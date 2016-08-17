@@ -170,6 +170,7 @@
 				}, 'ry': 20,
 				'fill': function(d){
 					if(d.type == "node") return "#fff";
+					else if(d.type == "port") return "purple";
 					else return "coral";
 				}
 			})
@@ -184,6 +185,10 @@
 			.append('text')
 			.attr({
 				'class': 'text',
+				'stroke': function(d){
+					if(d.type == "node") return "#000";
+					else return "#fff";
+				},
 				'text-anchor': 'middle',
 				'alignment-baseline': 'middle'
 			})
