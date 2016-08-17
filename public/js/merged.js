@@ -2,9 +2,7 @@
 	var graph = {};
 	$.get('/graph', function(data){
 		graph = data;
-	});
 
-	$().ready(function(){
 		$('body').animate({
 			'opacity': 1
 		}, 2000, 'easeInCubic');
@@ -138,11 +136,11 @@
 		width = $('svg.graph').width();
 		height = $('svg.graph').height();
 
-		//nodes = graph.nodes;
-		//links = graph.links;
+		nodes_2 = graph.nodes;
+		links_2 = graph.links;
 		var force2 = d3.layout.force()
-			.nodes(nodes)
-			.links(links)
+			.nodes(nodes_2)
+			.links(links_2)
 			.size([width, height])
 			.linkDistance(100)
 			.charge(-1000)
@@ -151,7 +149,7 @@
 
 		var svg_links2 = d3.select('svg.graph')
 			.selectAll('line')
-			.data(links)
+			.data(links_2)
 			.enter()
 			.append('line')
 			.attr({
@@ -160,7 +158,7 @@
 			});
 		var svg_nodes2 = d3.select('svg.graph')
 			.selectAll('ellipse')
-			.data(nodes)
+			.data(nodes_2)
 			.enter()
 			.append('ellipse')
 			.attr({
@@ -168,6 +166,9 @@
 					if(d.type == "node") return 50;
 					else return 20;
 				}, 'ry': 20,
+				'stroke': function(d){
+					if(d.type == "node") return "steelblue";
+				},
 				'fill': function(d){
 					if(d.type == "node") return "#fff";
 					else if(d.type == "port") return "purple";
@@ -180,7 +181,7 @@
 			.call(force2.drag); //this line can be commented
 		var svg_texts2 = d3.select('svg.graph')
 			.selectAll('text.text')
-			.data(nodes)
+			.data(nodes_2)
 			.enter()
 			.append('text')
 			.attr({
