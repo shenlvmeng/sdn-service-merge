@@ -129,15 +129,15 @@
 				'refX': 5, 'refY': 0,
 				'markerWidth': 3, 'markerHeight': 3,
 				'orient': 'auto',
-				'stroke-width': 1, 'fill': 'steelblue'
+				'stroke-width': 1, 'fill': '#ccc'
 			})
 			.append('path')
 			.attr('d', 'M0,-5L10,0L0,5');
 		width = $('svg.graph').width();
 		height = $('svg.graph').height();
 
-		nodes_2 = graph.nodes;
-		links_2 = graph.links;
+		var nodes_2 = graph.nodes;
+		var links_2 = graph.links;
 		var force2 = d3.layout.force()
 			.nodes(nodes_2)
 			.links(links_2)
@@ -151,7 +151,7 @@
 			.selectAll('line')
 			.data(links_2)
 			.enter()
-			.append('line')
+			.append('polyline')
 			.attr({
 				'stroke': '#ccc', 'stroke-width': 2,
 				'marker-mid' : 'url(#arrow)'
@@ -160,22 +160,22 @@
 			.selectAll('ellipse')
 			.data(nodes_2)
 			.enter()
-			.each(function(d, i, nodes){
-				if(d.type == "nodes") {
-					nodes.append("ellipse")
-						.attr({
-							'rx': 50, 'ry': 25, 'fill': "steelblue"
-						});
-				} else {
-					nodes.append("rect")
-						.attr({
-							'width': 50, 'height': 25,
-							'fill': function(){
-								if(d.type == 'port') return "steelblue";
-								else return "tomato";
-							}
-						});
-				}
+			.append('rect')
+			.attr({
+				'width': 50, 'height': 25,
+				'rx': function(d){
+					if(d.type == 'node') return 50;
+					else return 0;
+				},
+				'ry': function(d){
+					if(d.type == 'node') return 25;
+					else return 0;
+				},
+				'fill': function(d){
+					if(d.type == 'port') return 'tomato';
+					else return 'steelblue';
+				},
+				'transform': "translate(-25,-12)"
 			})
 			.on('dblclick', function(d){
 				d.fixed = false;
@@ -187,20 +187,20 @@
 			.enter()
 			.append('text')
 			.attr({
-				'class': 'text',
 				'stroke': "#fff",
 				'text-anchor': 'middle',
 				'alignment-baseline': 'middle'
 			})
-			.style('font-family', 'Calibri')
+			.style('font-family', 'Arial')
 			.text(function(d){
 				return d.name;
 			});
 		force2.on('tick', function(){
-			svg_links2.attr("x1", function(d) { return d.source.x; })
-				.attr("y1", function(d) { return d.source.y; })
-				.attr("x2", function(d) { return d.target.x; })
-				.attr("y2", function(d) { return d.target.y; });
+			svg_links2.attr("points", function(d) {
+      			return d.source.x + "," + d.source.y + " " + 
+		            (d.source.x + d.target.x)/2 + "," + (d.source.y + d.target.y)/2 + " " +
+		            d.target.x + "," + d.target.y;
+	         });
 			svg_nodes2.attr({
 				'cx': function(d) {return d.x = Math.max(50, Math.min(d.x, width -50));},
 				'cy': function(d) {return d.y = Math.max(50, Math.min(d.y, height-50));}
