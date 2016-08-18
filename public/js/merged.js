@@ -154,25 +154,27 @@
 			.append('line')
 			.attr({
 				'stroke': '#ccc', 'stroke-width': 2,
-				'marker-end' : 'url(#arrow)'
+				'marker-mid' : 'url(#arrow)'
 			});
 		var svg_nodes2 = d3.select('svg.graph')
 			.selectAll('ellipse')
 			.data(nodes_2)
 			.enter()
-			.append('ellipse')
-			.attr({
-				'rx': function(d){
-					if(d.type == "node") return 50;
-					else return 20;
-				}, 'ry': 20,
-				'stroke': function(d){
-					if(d.type == "node") return "steelblue";
-				},
-				'fill': function(d){
-					if(d.type == "node") return "#fff";
-					else if(d.type == "port") return "purple";
-					else return "coral";
+			.each(function(d, i, nodes){
+				if(d.type == "nodes") {
+					nodes.append("ellipse")
+						.attr({
+							'rx': 50, 'ry': 25, 'fill': "steelblue"
+						});
+				} else {
+					nodes.append("rect")
+						.attr({
+							'width': 50, 'height': 25,
+							'fill': function(){
+								if(d.type == 'port') return "steelblue";
+								else return "tomato";
+							}
+						});
 				}
 			})
 			.on('dblclick', function(d){
@@ -186,10 +188,7 @@
 			.append('text')
 			.attr({
 				'class': 'text',
-				'stroke': function(d){
-					if(d.type == "node") return "#000";
-					else return "#fff";
-				},
+				'stroke': "#fff",
 				'text-anchor': 'middle',
 				'alignment-baseline': 'middle'
 			})
