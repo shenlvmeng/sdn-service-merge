@@ -37,10 +37,13 @@ html(lang="zh-cn")
 				.width50
 					svg.topo
 				.width50
-					img
-			
+					if num == 1 
+						img(src="/img/merge1.png" style="height: 400px")
+					else 
+						img(src="/img/merge2.png" style="height: 400px")
+
 			#logic
 				.width50
-					img
+					img(src="/img/labels.png" style="height: 450px")
 				.width50
 					svg.graph

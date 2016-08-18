@@ -45,11 +45,10 @@ html(lang="zh-cn")
 				.width50
 					svg.topo
 				.width50
-					.table 
-						img 
-					.graph
-						img
-
+					if title == 'Admin 3: Billing'
+						img(src="/img/billing.png" style="margin-top: 70px;")
+					else
+						img(src="/img/balance.png" style="height: 640px;")
 
 			#start
 				if active

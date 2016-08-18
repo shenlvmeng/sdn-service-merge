@@ -51,10 +51,16 @@ module.exports = function(app){
 			if(err){
 				console.error('Merge failed:', err);
 			}
-			module_graph = JSON.parse(body);
+			try{
+				module_graph = JSON.parse(body);
+			} catch(e) {
+				console.log("Python server 404/500 error.");
+			}
 			console.log("Python server responses with body: ", body);
+			if(modules.indexOf("Firewall") == -1 && modules.length == 2) var num = 1;
+			else var num = 2;
+			res.render('merged', {title: 'Merge results', num: num});
 		});
-		res.render('merged', {title: 'Merge results'});
 	});
 	app.get('/graph', function(req, res){
 		console.log("Merged logic graph: ", module_graph);

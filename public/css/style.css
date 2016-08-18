@@ -98,6 +98,9 @@ header span{
 	margin-left: 50%;
 	padding-left: 5em;
 }
+.width50 .graph{
+	min-width: 550px;
+}
 #graphs .width50:nth-child(1){
 	border-right: 1px solid #aaa;
 }
